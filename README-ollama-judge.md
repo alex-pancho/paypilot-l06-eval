@@ -17,8 +17,8 @@
    JUDGE_MODEL=ollama:qwen2.5:7b
    OLLAMA_URL=http://host.docker.internal:11434
    ```
-   - Префікс `ollama:` обов'язковий, далі назва **точно як у `ollama list`**.
-   - Ранер працює в контейнері, тож `127.0.0.1` там означає сам контейнер.
+   - Префікс `ollama:` обов'язковий, далі назва моделі **точно як у `ollama list`**.
+   - Ранер працює в контейнері, тож `127.0.0.1` у OLLAMA_URL означиме сам контейнер.
 3. Перевірка судді без стенду:
    ```
    docker compose run --rm --entrypoint python eval judge.py
@@ -33,9 +33,10 @@ Ollama за замовчуванням слухає лише `127.0.0.1` Windows
 
 - Windows: `OLLAMA_HOST=0.0.0.0` (змінна середовища), перезапустити Ollama,
   дозволити порт 11434 у брандмауері.
-- `OLLAMA_URL` — `http://host.docker.internal:11434` або, якщо не працює,
+- `OLLAMA_URL=http://host.docker.internal:11434` або, якщо не працює,
   адреса шлюзу WSL: `ip route | awk '/default/ {print $3}'`
-  (це `172.x.x.1`, вона змінюється після перезапуску WSL).
+  Це буде адреса`172.x.x.1`, вона змінюється після перезапуску WSL. 
+  ЇЇ підставити у файл .env `OLLAMA_HOST=http://172.x.x.1:11434`
 - Перевірка з контейнера:
   ```
   docker compose run --rm --entrypoint python eval -c "import os,urllib.request as r;print(r.urlopen(os.environ['OLLAMA_URL']+'/api/tags',timeout=10).read()[:200])"
