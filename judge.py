@@ -62,12 +62,13 @@ def _anthropic(prompt: str, model: str, temperature: float | None) -> str:
     raise RuntimeError("judge unreachable")
 
 
-def _ollama(prompt: str, model: str, temperature: float) -> str:
+def _ollama(prompt: str, model: str, temperature: float | None) -> str:
     ""
-    base = os.environ.get("OLLAMA_URL", "http://localhost:11434")
+    base = os.environ.get("OLLAMA_URL", "http://host.docker.internal:11434")
+    model = model.removeprefix("ollama:")
     payload = json.dumps({
-        "model": model, "stream": False,
-        "options": {"temperature": temperature},
+        "model": model, "stream": False, "format": "json",
+        "options": {"temperature": 0 if temperature is None else temperature},
         "system": SYSTEM, "prompt": prompt,
     }).encode("utf-8")
     req = urllib.request.Request(
