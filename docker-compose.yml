@@ -11,7 +11,7 @@ x-eval: &eval
     - ${STAND_DIR:-../paypilot-stand}/app:/course/app:ro
 
 x-eval-env: &eval-env
-  SET: ${SET:-l05}
+  SET: ${SET:-l06}
   GATE: ${GATE:-}
   CASE: ${CASE:-}
   SUMMARIZE_AFTER: ${SUMMARIZE_AFTER:-}

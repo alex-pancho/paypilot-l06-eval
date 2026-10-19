@@ -81,8 +81,25 @@ def _validate(case: dict, where: str) -> None:
         raise SetError(f"{where}: summarize_after must be a positive integer")
 
 
+def _expand_all_turns(case: dict, meta: dict) -> None:
+    """`"turn": "all"` (or `"turns": "all"`) -> one check per user turn."""
+    n_user = sum(1 for t in case.get("turns", []) if t.get("role") == "user")
+    out = []
+    for c in meta.get("checks", []):
+        if c.get("turn") == "all" or c.get("turns") == "all":
+            for i in range(1, n_user + 1):
+                d = {k: v for k, v in c.items() if k not in ("turn", "turns")}
+                d["turn"] = i
+                d["label"] = f"{c.get('label', c['assertion'])} (turn {i})"
+                out.append(d)
+        else:
+            out.append(c)
+    meta["checks"] = out
+
+
 def _validate_dialog(case: dict, meta: dict, where: str) -> None:
     ""
+    _expand_all_turns(case, meta)
     if not case.get("turns"):
         raise SetError(f"{where}: assertion 'dialog' needs turns")
     n_user = sum(1 for t in case["turns"] if t["role"] == "user")

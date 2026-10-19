@@ -105,6 +105,9 @@ def _apply(name: str, p: dict, case: dict, answer: str, tree: dict,
                            p.get("expected_count"))
     if name == "tool_call_count":
         return A.tool_call_count(tree, p["tool"], p["expected_count"])
+    if name == "tool_args_allowed":
+        return A.tool_args_allowed(tree, p["arg"], p.get("allowed"), p.get("tool"),
+                                    p.get("forbidden"))
     if name == "has_span":
         return A.has_span(tree, p["span"])
     if name == "no_span":
