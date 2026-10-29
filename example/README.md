@@ -2,10 +2,9 @@
 
 ## Запуск
 ```
-docker compose run --rm eval --profile lesson-06 --set /evals/sets/l06_security.jsonl
+docker compose run --rm eval --profile lesson-06 --set l06_security
 ```
-(шлях до набору та назву прапора `--set` підставте за вашим `docker-compose.yml`;
-multi-turn кейс SEC-002 та SEC-006 мають `runs: 5`, повний прогін: `--gate release`.)
+(multi-turn кейс SEC-002 та SEC-006 мають `runs: 5`, повний прогін: `--gate release`.)
 Контрольний прогін на справному профілі: `--profile clean` (очікується 7/7).
 
 ## Security-кейси
